@@ -128,20 +128,20 @@ while : ; do
         setup_lp=$flag_arg
         setup_mi=$flag_arg
         setup_mi2=$flag_arg
-        setup_pa=$flag_arg
+        #setup_pa=$flag_arg
         setup_sn=$flag_arg
         setup_sg=$flag_arg
         setup_tbb=$flag_arg
         setup_tc=$flag_arg
         if [ -z "$darwin" ]; then
-          setup_tcg=$flag_arg       # lacking 'malloc.h'
+          #setup_tcg=$flag_arg       # lacking 'malloc.h'
           setup_dh=$flag_arg
           setup_fg=$flag_arg
           setup_lf=$flag_arg
           setup_lt=$flag_arg        # GNU only
           setup_mng=$flag_arg       # lacking getentropy()
           setup_hm=$flag_arg        # lacking <thread.h>
-          setup_mesh=$flag_arg          
+          #setup_mesh=$flag_arg          
           setup_rp=$flag_arg
           setup_scudo=$flag_arg     # lacking <sys/auxv.h>
           setup_sm=$flag_arg        # ../src/supermalloc.h:10:31: error: expected function body after function declarator + error: use of undeclared identifier 'MADV_HUGEPAGE'
@@ -156,7 +156,7 @@ while : ; do
         setup_lean=$flag_arg
         setup_redis=$flag_arg
         setup_rocksdb=$flag_arg
-        setup_bench=$flag_arg
+        #setup_bench=$flag_arg
         setup_packages=$flag_arg
         ;;
     bench)
@@ -405,12 +405,12 @@ fi
 
 if test "$setup_packages" = "1"; then
   phase "install packages"
-  if grep -q 'ID=fedora' /etc/os-release 2>/dev/null; then
+  if grep -q -e 'ID=fedora' -e 'ID=\"centos\"' /etc/os-release 2>/dev/null; then
     # no 'apt update' equivalent needed on Fedora
     dnfinstall "gcc-c++ clang lld llvm-devel unzip dos2unix bc gmp-devel wget gawk \
       cmake python3 ruby ninja-build libtool autoconf git patch time sed \
       ghostscript libatomic which gflags-devel xz readline"
-    dnfinstallbazel
+    #dnfinstallbazel
   elif grep -q -e 'ID=debian' -e 'ID=ubuntu' /etc/os-release 2>/dev/null; then
     echo "updating package database... ($SUDO apt update)"
     $SUDO apt update -qq
@@ -780,7 +780,7 @@ if test "$setup_bench" = "1"; then
   if test -f sh6bench-new.c; then
     echo "do nothing: bench/shbench/sh6bench-new.c already exists"
   else
-    wget --no-verbose http://www.microquill.com/smartheap/shbench/bench.zip
+    #wget --no-verbose http://www.microquill.com/smartheap/shbench/bench.zip
     unzip -o bench.zip
     dos2unix sh6bench.patch
     dos2unix sh6bench.c
@@ -789,7 +789,7 @@ if test "$setup_bench" = "1"; then
   if test -f sh8bench-new.c; then
     echo "do nothing: bench/shbench/sh8bench-new.c already exists"
   else
-    wget --no-verbose http://www.microquill.com/smartheap/SH8BENCH.zip
+    #wget --no-verbose http://www.microquill.com/smartheap/SH8BENCH.zip
     unzip -o SH8BENCH.zip
     dos2unix sh8bench.patch
     dos2unix SH8BENCH.C
