@@ -556,15 +556,20 @@ fi
 
 if test "$setup_tc" = "1"; then
   checkout tc $version_tc https://github.com/gperftools/gperftools
-  if test -f configure; then
-    echo "already configured"
-  else
-    ./autogen.sh
-    CXXFLAGS="$CXXFLAGS -w -DNDEBUG -O2" ./configure --enable-minimal --disable-debugalloc
-  fi
-  make -j $procs # ends with error on benchmark, but thats ok.
-  #echo ""
-  #echo "(note: the error 'Makefile:3912: recipe for target 'malloc_bench' failed' is expected)"
+    
+  # if test -f configure; then
+  #   echo "already configured"
+  # else
+  #   ./autogen.sh
+  #   CXXFLAGS="$CXXFLAGS -w -DNDEBUG -O2" ./configure --enable-minimal --disable-debugalloc
+  # fi
+  # make -j $procs # ends with error on benchmark, but thats ok.
+  # echo ""
+  # echo "(note: the error 'Makefile:3912: recipe for target 'malloc_bench' failed' is expected)"
+
+  (mkdir -p build;cd build;cmake ../CMakeLists.txt;make;mkdir -p ../.libs;cp libtcmalloc_minimal.so ../.libs)
+  
+  
   popd
 fi
 
